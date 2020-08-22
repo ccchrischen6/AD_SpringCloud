@@ -35,6 +35,6 @@ public class AdUnitDistrict {
 
     public AdUnitDistrict(Long unitId, String province, String city) {
         this.unitId = unitId;
-        this.province = province
+        this.province = province;
     }
 }
