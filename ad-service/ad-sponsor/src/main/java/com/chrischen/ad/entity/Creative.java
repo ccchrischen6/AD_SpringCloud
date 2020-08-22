@@ -19,6 +19,7 @@ import java.util.Date;
 public class Creative {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic
@@ -73,5 +74,5 @@ public class Creative {
     @Basic
     @Column(name = "update_time", nullable = false)
     private Date updateTime;
-    
+
 }
