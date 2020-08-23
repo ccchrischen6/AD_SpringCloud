@@ -1,5 +1,6 @@
 package com.chrischen.ad.service.impl;
 
+import com.chrischen.ad.constant.CommonStatus;
 import com.chrischen.ad.constant.Constants;
 import com.chrischen.ad.dao.AdPlanRepository;
 import com.chrischen.ad.dao.AdUserRepository;
@@ -14,6 +15,7 @@ import com.chrischen.ad.vo.AdPlanResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,14 +37,14 @@ public class AdPlanServiceImpl implements IAdPlanService {
     @Override
     @Transactional
     public AdPlanResponse createAdPlan(AdPlanRequest request) throws AdException {
-        if (!request.createValidate()){
+        if (!request.createValidate()) {
             throw new AdException(Constants.ErrorMsg.REQUEST_PARAM_ERROR);
         }
 
         //make sure there is at least a adUser
         Optional<AdUser> adUser = userRepository.findById(request.getUserId());
 
-        if(!adUser.isPresent()){
+        if (!adUser.isPresent()) {
             throw new AdException(Constants.ErrorMsg.CAN_NOT_FIND_RECORD);
         }
 
@@ -76,12 +78,58 @@ public class AdPlanServiceImpl implements IAdPlanService {
     }
 
     @Override
+    @Transactional
     public AdPlanResponse updateAdPlan(AdPlanRequest request) throws AdException {
-        return null;
+        if (!request.updateValidate()) {
+            throw new AdException(Constants.ErrorMsg.REQUEST_PARAM_ERROR);
+        }
+
+        AdPlan plan = planRepository.findByIdAndUserId(
+                request.getId(), request.getUserId()
+        );
+
+        //we could update any of plan records
+        if (plan == null) {
+            throw new AdException(Constants.ErrorMsg.CAN_NOT_FIND_RECORD);
+        }
+
+        if (request.getPlanName() != null) {
+            plan.setPlanName(request.getPlanName());
+        }
+        if (request.getStartDate() != null) {
+            plan.setStartDate(
+                    CommonUtils.parseStringDate(request.getStartDate())
+            );
+        }
+        if (request.getEndDate() != null) {
+            plan.setEndDate(
+                    CommonUtils.parseStringDate(request.getEndDate())
+            );
+        }
+
+        plan.setUpdateTime(new Date());
+        //save
+        plan = planRepository.save(plan);
+        //write back to database
+        return new AdPlanResponse(plan.getId(), plan.getPlanName());
     }
 
     @Override
+    @Transactional
     public void deleteAdPlan(AdPlanRequest request) throws AdException {
+        if (!request.deleteValidate()) {
+            throw new AdException(Constants.ErrorMsg.REQUEST_PARAM_ERROR);
+        }
 
+        AdPlan plan = planRepository.findByIdAndUserId(
+                request.getId(), request.getUserId()
+        );
+        if (plan == null) {
+            throw new AdException(Constants.ErrorMsg.CAN_NOT_FIND_RECORD);
+        }
+
+        plan.setPlanStatus(CommonStatus.INVALID.getStatus());
+        plan.setUpdateTime(new Date());
+        planRepository.save(plan);
     }
 }
