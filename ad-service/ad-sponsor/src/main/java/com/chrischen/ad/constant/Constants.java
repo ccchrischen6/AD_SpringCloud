@@ -9,5 +9,6 @@ public class Constants {
         public static final String SAME_NAME_ERROR = "the same username already exists";
         public static final String CAN_NOT_FIND_RECORD = "cannot find record";
         public static final String SAME_NAME_PLAN_ERROR = "an ad plan with the same name already exits";
+        public static final String SAME_NAME_UNIT_ERROR = "an ad unit with the same name already exits";
     }
 }
