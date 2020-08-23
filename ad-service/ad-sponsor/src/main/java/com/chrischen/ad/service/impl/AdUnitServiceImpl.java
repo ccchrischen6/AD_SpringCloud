@@ -7,8 +7,7 @@ import com.chrischen.ad.entity.AdPlan;
 import com.chrischen.ad.entity.AdUnit;
 import com.chrischen.ad.exception.AdException;
 import com.chrischen.ad.service.IAdUnitService;
-import com.chrischen.ad.vo.AdUnitRequest;
-import com.chrischen.ad.vo.AdUnitResponse;
+import com.chrischen.ad.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +56,20 @@ public class AdUnitServiceImpl implements IAdUnitService {
         );
 
         return new AdUnitResponse(newAdUnit.getId(), newAdUnit.getUnitName());
+    }
+
+    @Override
+    public AdUnitKeywordResponse createUnitKeyword(AdUnitKeywordRequest request) throws AdException {
+        return null;
+    }
+
+    @Override
+    public AdUnitItResponse createUnitIt(AdUnitItRequest request) throws AdException {
+        return null;
+    }
+
+    @Override
+    public AdUnitDistrictResponse createUnitDistrict(AdUnitDistrictRequest request) throws AdException {
+        return null;
     }
 }
