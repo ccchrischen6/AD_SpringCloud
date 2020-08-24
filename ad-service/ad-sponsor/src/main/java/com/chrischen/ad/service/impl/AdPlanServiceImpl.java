@@ -13,6 +13,7 @@ import com.chrischen.ad.vo.AdPlanGetRequest;
 import com.chrischen.ad.vo.AdPlanRequest;
 import com.chrischen.ad.vo.AdPlanResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.Optional;
 /**
  * Created by Chris Chen
  */
+@Service
 public class AdPlanServiceImpl implements IAdPlanService {
 
     private final AdUserRepository userRepository;
