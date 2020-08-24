@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AdUnitDistrictRequest {
 
-    private List<Long> unitDistricts;
+    private List<UnitDistrict> unitDistricts;
 
     @Data
     @AllArgsConstructor

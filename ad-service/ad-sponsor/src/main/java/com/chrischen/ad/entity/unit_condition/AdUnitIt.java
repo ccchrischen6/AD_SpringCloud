@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "ad_unit_it")
-public class AdunitIt {
+public class AdUnitIt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class AdunitIt {
     @Column(name = "it_tag", nullable = false)
     private String itTag;
 
-    public AdunitIt(Long unitId, String itTag) {
+    public AdUnitIt(Long unitId, String itTag) {
         this.unitId = unitId;
         this.itTag = itTag;
     }
