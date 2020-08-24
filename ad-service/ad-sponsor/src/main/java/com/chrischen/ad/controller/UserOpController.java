@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserOpController {
     private final IUserService userService;
 
+    @Autowired
     public UserOpController(IUserService userService) {
         this.userService = userService;
     }
