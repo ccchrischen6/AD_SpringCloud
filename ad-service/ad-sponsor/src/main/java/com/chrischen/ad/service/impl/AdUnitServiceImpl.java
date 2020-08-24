@@ -3,14 +3,17 @@ package com.chrischen.ad.service.impl;
 import com.chrischen.ad.constant.Constants;
 import com.chrischen.ad.dao.AdPlanRepository;
 import com.chrischen.ad.dao.AdUnitRepository;
+import com.chrischen.ad.dao.CreativeRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitDistrictRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitItRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitKeywordRepository;
+import com.chrischen.ad.dao.unit_condition.CreativeUnitRepostitory;
 import com.chrischen.ad.entity.AdPlan;
 import com.chrischen.ad.entity.AdUnit;
 import com.chrischen.ad.entity.unit_condition.AdUnitDistrict;
 import com.chrischen.ad.entity.unit_condition.AdUnitKeyword;
 import com.chrischen.ad.entity.unit_condition.AdUnitIt;
+import com.chrischen.ad.entity.unit_condition.CreativeUnit;
 import com.chrischen.ad.exception.AdException;
 import com.chrischen.ad.service.IAdUnitService;
 import com.chrischen.ad.vo.*;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -33,13 +37,18 @@ public class AdUnitServiceImpl implements IAdUnitService {
     private final AdUnitItRepository unitItRepository;
     private final AdUnitDistrictRepository unitDistrictRepository;
 
+    private final CreativeUnitRepostitory creativeUnitRepostitory;
+    private final CreativeRepository creativeRepository;
+
     @Autowired
-    public AdUnitServiceImpl(AdPlanRepository planRepository, AdUnitRepository unitRepository, AdUnitKeywordRepository unitKeywordRepository, AdUnitItRepository unitItRepository, AdUnitDistrictRepository unitDistrictRepository) {
+    public AdUnitServiceImpl(AdPlanRepository planRepository, AdUnitRepository unitRepository, AdUnitKeywordRepository unitKeywordRepository, AdUnitItRepository unitItRepository, AdUnitDistrictRepository unitDistrictRepository, CreativeRepository creativeRepository, CreativeUnitRepostitory creativeUnitRepostitory) {
         this.planRepository = planRepository;
         this.unitRepository = unitRepository;
         this.unitKeywordRepository = unitKeywordRepository;
         this.unitItRepository = unitItRepository;
         this.unitDistrictRepository = unitDistrictRepository;
+        this.creativeRepository = creativeRepository;
+        this.creativeUnitRepostitory = creativeUnitRepostitory;
     }
 
     @Override
@@ -137,6 +146,28 @@ public class AdUnitServiceImpl implements IAdUnitService {
         return new AdUnitDistrictResponse(ids);
     }
 
+    @Override
+    public CreativeUnitResponse createCreativeUnit(CreativeUnitRequest request) throws AdException {
+        List<Long> unitIds = request.getUnitItems().stream().
+                map(CreativeUnitRequest.CreativeUnitItem::getUnitId).collect(Collectors.toList());
+
+        List<Long> creativeIds = request.getUnitItems().stream().
+                map(CreativeUnitRequest.CreativeUnitItem::getCreativeId).collect(Collectors.toList());
+
+        if(!isRelatedUnitExist(unitIds) || !isRelatedCreativeExist(creativeIds)){
+            throw new AdException(Constants.ErrorMsg.REQUEST_PARAM_ERROR);
+        }
+
+        List<CreativeUnit> creativeUnits = new ArrayList<>();
+        request.getUnitItems().forEach(item -> creativeUnits.add(
+                new CreativeUnit(item.getCreativeId(), item.getUnitId())
+        ));
+
+        List<Long> ids = creativeUnitRepostitory.saveAll(creativeUnits).stream().
+                map(CreativeUnit::getId).collect(Collectors.toList());
+        return new CreativeUnitResponse(ids);
+    }
+
     //judge if related units exist
     private boolean isRelatedUnitExist(List<Long> unitIds) {
         if (unitIds.size() == 0) {
@@ -146,4 +177,24 @@ public class AdUnitServiceImpl implements IAdUnitService {
         //remove duplication
         return unitRepository.findAllById(unitIds).size() == new HashSet<>(unitIds).size();
     }
+
+    //judge if creative is available
+    private boolean isRelatedCreativeExist(List<Long> creativeIds){
+        if (creativeIds == null){
+            return false;
+        }
+
+        return creativeRepository.findAllById(creativeIds).size() == new HashSet<>(creativeIds).size();
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
