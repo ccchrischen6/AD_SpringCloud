@@ -18,6 +18,10 @@
         <module>ad-search</module>
         <module>ad-search2</module>
         <module>ad-search3</module>
+        <module>ad-search4</module>
+        <module>ad-search</module>
+        <module>ad-test-only</module>
+        <module>ad-search</module>
     </modules>
     <packaging>pom</packaging>
 
