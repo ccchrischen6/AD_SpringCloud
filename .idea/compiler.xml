@@ -10,6 +10,7 @@
         <module name="ad-gateway" />
         <module name="ad-sponsor" />
         <module name="ad-common" />
+        <module name="ad_search" />
       </profile>
     </annotationProcessing>
   </component>
@@ -20,6 +21,7 @@
       <module name="ad-gateway" options="-parameters" />
       <module name="ad-service" options="-parameters" />
       <module name="ad-sponsor" options="-parameters" />
+      <module name="ad_search" options="-parameters" />
     </option>
   </component>
 </project>
