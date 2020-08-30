@@ -15,6 +15,9 @@
         <module>ad-common</module>
         <module>ad-sponsor</module>
         <module>ad-search</module>
+        <module>ad-search</module>
+        <module>ad-search2</module>
+        <module>ad-search3</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -9,6 +9,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/ad-search/pom.xml" />
         <option value="$PROJECT_DIR$/ad-service/ad-search/pom.xml" />
       </set>
     </option>
