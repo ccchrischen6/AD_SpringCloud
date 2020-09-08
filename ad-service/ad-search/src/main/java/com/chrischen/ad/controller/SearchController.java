@@ -2,6 +2,7 @@ package com.chrischen.ad.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.annotation.IgnoreResponseAdvice;
+import com.chrischen.ad.client.SponsorClient;
 import com.chrischen.ad.client.vo.AdPlan;
 import com.chrischen.ad.client.vo.AdPlanGetRequest;
 import com.chrischen.ad.vo.CommonResponse;
@@ -21,9 +22,21 @@ import java.util.List;
 @RestController
 public class SearchController {
     private final RestTemplate restTemplate;
+    private final SponsorClient sponsorClient;
 
-    public SearchController(RestTemplate restTemplate) {
+    public SearchController(RestTemplate restTemplate, SponsorClient sponsorClient) {
         this.restTemplate = restTemplate;
+        this.sponsorClient = sponsorClient;
+    }
+
+    @IgnoreResponseAdvice
+    @PostMapping("/getAdPlans")
+    public CommonResponse<List<AdPlan>> getAdPlans(
+            @RequestBody AdPlanGetRequest request
+    ) {
+        log.info("ad-search: getAdPlans -> {}",
+                JSON.toJSONString(request));
+        return sponsorClient.getAdPlans(request);
     }
 
     @SuppressWarnings("All")
