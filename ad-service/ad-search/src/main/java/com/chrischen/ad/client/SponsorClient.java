@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Chris Chen
  */
-@FeignClient(value = "eureka-client-ad-sponsor")
+@FeignClient(value = "eureka-client-ad-sponsor", fallback = SponsorClientHystrix.class)
 public interface SponsorClient {
 
     @RequestMapping(value = "/ad-sponsor/get/adPlan", method = RequestMethod.POST)
