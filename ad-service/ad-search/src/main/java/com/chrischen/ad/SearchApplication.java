@@ -1,3 +1,5 @@
+package com.chrischen.ad;
+
 import org.springframework.boot.SpringApplication;
 
 /**
