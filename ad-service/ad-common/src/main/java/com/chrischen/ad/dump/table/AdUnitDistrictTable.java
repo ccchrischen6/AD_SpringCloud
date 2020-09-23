@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdUnitItTable {
+public class AdUnitDistrictTable {
     private Long unitId;
-    private String itTag;
-
+    private String province;
+    private String city;
 }
