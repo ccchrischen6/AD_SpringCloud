@@ -10,12 +10,12 @@ import com.chrischen.ad.dao.unit_condition.AdUnitDistrictRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitItRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitKeywordRepository;
 import com.chrischen.ad.dao.unit_condition.CreativeUnitRepostitory;
-import com.chrischen.ad.dump.table.AdCreativeTable;
-import com.chrischen.ad.dump.table.AdPlanTable;
-import com.chrischen.ad.dump.table.AdUnitTable;
+import com.chrischen.ad.dump.table.*;
 import com.chrischen.ad.entity.AdPlan;
 import com.chrischen.ad.entity.AdUnit;
 import com.chrischen.ad.entity.Creative;
+import com.chrischen.ad.entity.unit_condition.AdUnitIt;
+import com.chrischen.ad.entity.unit_condition.CreativeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.runner.RunWith;
@@ -147,6 +147,58 @@ public class DumpDataService {
         }
         catch (IOException e){
             log.error("dumpAdCreativeTable error");
+        }
+    }
+
+    private void dumpAdCreativeUnitTable(String fileName){
+        List<CreativeUnit> creativeUnits = creativeUnitRepostitory.findAll();
+        if(CollectionUtils.isEmpty(creativeUnits)){
+            return;
+        }
+
+        List<AdCreativeUnitTable> creativeUnitTables = new ArrayList<>();
+        creativeUnits.forEach(c -> creativeUnitTables.add(
+                new AdCreativeUnitTable(
+                        c.getId(),
+                        c.getUnitId()
+                )
+        ));
+
+        Path path = Paths.get(fileName);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)){
+            for(AdCreativeUnitTable creativeUnitTable: creativeUnitTables){
+                writer.write(JSON.toJSONString(creativeUnitTable));
+                writer.newLine();
+            }
+        }
+        catch (IOException e){
+            log.error("dumpAdCreativeUnitTable error");
+        }
+    }
+
+    private void dumpAdUnitItTable(String fileName){
+        List<AdUnitIt> unitIts = itRepository.findAll();
+        if(CollectionUtils.isEmpty(unitIts)){
+            return;
+        }
+
+        List<AdUnitItTable> unitItTables = new ArrayList<>();
+        unitIts.forEach(u -> unitItTables.add(
+                new AdUnitItTable(
+                        u.getUnitId(),
+                        u.getItTag()
+                )
+        ));
+
+        Path path = Paths.get(fileName);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)){
+            for(AdUnitItTable unitTable: unitItTables){
+                writer.write(JSON.toJSONString(unitTable));
+                writer.newLine();
+            }
+        }
+        catch (IOException e){
+            log.error("dumpAdUnitItTable error");
         }
     }
 
