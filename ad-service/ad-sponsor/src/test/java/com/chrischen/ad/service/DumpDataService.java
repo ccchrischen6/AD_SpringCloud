@@ -10,14 +10,18 @@ import com.chrischen.ad.dao.unit_condition.AdUnitDistrictRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitItRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitKeywordRepository;
 import com.chrischen.ad.dao.unit_condition.CreativeUnitRepostitory;
+import com.chrischen.ad.dump.DConstant;
 import com.chrischen.ad.dump.table.*;
 import com.chrischen.ad.entity.AdPlan;
 import com.chrischen.ad.entity.AdUnit;
 import com.chrischen.ad.entity.Creative;
+import com.chrischen.ad.entity.unit_condition.AdUnitDistrict;
 import com.chrischen.ad.entity.unit_condition.AdUnitIt;
+import com.chrischen.ad.entity.unit_condition.AdUnitKeyword;
 import com.chrischen.ad.entity.unit_condition.CreativeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,6 +58,18 @@ public class DumpDataService {
     @Autowired
     private AdUnitKeywordRepository keywordRepository;
 
+
+    @Test
+    public void dumpAdTableData(){
+        dumpAdPlanTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_PLAN));
+        dumpAdUnitTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_UNIT));
+        dumpAdCreativeTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_CREATIVE));
+        dumpAdCreativeUnitTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_CREATIVE_UNIT));
+        dumpAdUnitDistrictTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_UNIT_DISTRICT));
+        dumpAdUnitItTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_UNIT_IT));
+        dumpAdUnitKeywordTable(String.format("%s%s", DConstant.DATA_ROOT_DIR, DConstant.AD_UNIT_KEYWORD));
+
+    }
 
     //save adPlanTable to a local file
     private void dumpAdPlanTable(String fileName){
@@ -176,6 +192,34 @@ public class DumpDataService {
         }
     }
 
+    private void dumpAdUnitDistrictTable(String fileName) {
+
+        List<AdUnitDistrict> unitDistricts = districtRepository.findAll();
+        if (CollectionUtils.isEmpty(unitDistricts)) {
+            return;
+        }
+
+        List<AdUnitDistrictTable> unitDistrictTables = new ArrayList<>();
+        unitDistricts.forEach(d -> unitDistrictTables.add(
+                new AdUnitDistrictTable(
+                        d.getUnitId(),
+                        d.getProvince(),
+                        d.getCity()
+                )
+        ));
+
+        Path path = Paths.get(fileName);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (AdUnitDistrictTable unitDistrictTable : unitDistrictTables) {
+                writer.write(JSON.toJSONString(unitDistrictTable));
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException ex) {
+            log.error("dumpAdUnitDistrictTable error");
+        }
+    }
+
     private void dumpAdUnitItTable(String fileName){
         List<AdUnitIt> unitIts = itRepository.findAll();
         if(CollectionUtils.isEmpty(unitIts)){
@@ -200,6 +244,34 @@ public class DumpDataService {
         catch (IOException e){
             log.error("dumpAdUnitItTable error");
         }
+    }
+
+    private void dumpAdUnitKeywordTable(String fileName){
+        List<AdUnitKeyword> unitKeywords = keywordRepository.findAll();
+        if(CollectionUtils.isEmpty(unitKeywords)){
+            return;
+        }
+
+        List<AdUnitKeywordTable> unitKeywordTables = new ArrayList<>();
+        unitKeywords.forEach(k -> unitKeywordTables.add(
+                new AdUnitKeywordTable(
+                        k.getUnitId(),
+                        k.getKeyword()
+                )
+        ));
+
+        Path path = Paths.get(fileName);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)){
+            for(AdUnitKeywordTable unitKeywordTable: unitKeywordTables){
+                writer.write(JSON.toJSONString(unitKeywordTable));
+                writer.newLine();
+            }
+        }
+        catch (IOException e){
+            log.error("dumpAdUnitKeywordTable error");
+        }
+
+
     }
 
 }
