@@ -10,10 +10,12 @@ import com.chrischen.ad.dao.unit_condition.AdUnitDistrictRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitItRepository;
 import com.chrischen.ad.dao.unit_condition.AdUnitKeywordRepository;
 import com.chrischen.ad.dao.unit_condition.CreativeUnitRepostitory;
+import com.chrischen.ad.dump.table.AdCreativeTable;
 import com.chrischen.ad.dump.table.AdPlanTable;
 import com.chrischen.ad.dump.table.AdUnitTable;
 import com.chrischen.ad.entity.AdPlan;
 import com.chrischen.ad.entity.AdUnit;
+import com.chrischen.ad.entity.Creative;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.runner.RunWith;
@@ -113,6 +115,38 @@ public class DumpDataService {
         }
         catch (IOException e){
             log.error("dumpAdUnitTable error");
+        }
+    }
+
+    private void dumpAdCreativeTable(String fileName){
+        List<Creative> creatives = creativeRepository.findAll();
+        if(CollectionUtils.isEmpty(creatives)){
+            return;
+        }
+
+        List<AdCreativeTable> creativeTables = new ArrayList<>();
+        creatives.forEach(p -> creativeTables.add(
+                new AdCreativeTable(
+                        p.getId(),
+                        p.getName(),
+                        p.getType(),
+                        p.getMaterialType(),
+                        p.getHeight(),
+                        p.getWidth(),
+                        p.getAuditStatus(),
+                        p.getUrl()
+                )
+        ));
+
+        Path path = Paths.get(fileName);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)){
+            for(AdCreativeTable creativeTable: creativeTables){
+                writer.write(JSON.toJSONString(creativeTable));
+                writer.newLine();
+            }
+        }
+        catch (IOException e){
+            log.error("dumpAdCreativeTable error");
         }
     }
 
