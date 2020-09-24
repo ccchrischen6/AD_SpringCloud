@@ -2,10 +2,13 @@ package com.chrischen.ad.handler;
 
 import com.chrischen.ad.dump.table.AdCreativeTable;
 import com.chrischen.ad.dump.table.AdPlanTable;
+import com.chrischen.ad.dump.table.AdUnitTable;
 import com.chrischen.ad.index.DataTable;
 import com.chrischen.ad.index.IndexAware;
 import com.chrischen.ad.index.adPlan.AdPlanIndex;
 import com.chrischen.ad.index.adPlan.AdPlanObject;
+import com.chrischen.ad.index.adUnit.AdUnitIndex;
+import com.chrischen.ad.index.adUnit.AdUnitObject;
 import com.chrischen.ad.index.creative.CreativeIndex;
 import com.chrischen.ad.index.creative.CreativeObject;
 import com.chrischen.ad.mysql.constant.OpType;
@@ -15,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
  * Created by Chris Chen
  *
  * add, update or delete index
+ *
+ * indexes of level 2 are separated from other indexes
  *
  */
 
@@ -73,6 +78,30 @@ public class AdLevelDataHandler {
                 DataTable.of(CreativeIndex.class),
                 creativeObject.getAdId(),
                 creativeObject,
+                type
+        );
+    }
+
+    public static void handleLevel3(AdUnitTable unitTable, OpType type){
+        AdPlanObject planObject = DataTable.of(AdPlanIndex.class).get(unitTable.getPlanId());
+        if(planObject == null){
+            log.error("error found in handleLevel 3, the planObject has not generated: {}",
+                    unitTable.getPlanId());
+            return;
+        }
+
+        AdUnitObject unitObject = new AdUnitObject(
+                unitTable.getUnitId(),
+                unitTable.getUnitStatus(),
+                unitTable.getPositionType(),
+                unitTable.getPlanId(),
+                planObject
+        );
+
+        handleBinLogEvent(
+                DataTable.of(AdUnitIndex.class),
+                unitTable.getUnitId(),
+                unitObject,
                 type
         );
     }
