@@ -1,6 +1,8 @@
 package com.chrischen.ad.handler;
 
+import com.chrischen.ad.dump.table.AdPlanTable;
 import com.chrischen.ad.index.IndexAware;
+import com.chrischen.ad.index.adPlan.AdPlanObject;
 import com.chrischen.ad.mysql.constant.OpType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,5 +33,15 @@ public class AdLevelDataHandler {
                     default:
                         break;
                 }
+    }
+
+    public static void handleLevel2(AdPlanTable planTable, OpType type){
+        AdPlanObject planObject = new AdPlanObject(
+                planTable.getId(),
+                planTable.getUserId(),
+                planTable.getPlanStatus(),
+                planTable.getStartDate(),
+                planTable.getEndDate()
+        );
     }
 }
