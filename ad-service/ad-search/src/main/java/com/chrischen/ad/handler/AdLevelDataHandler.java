@@ -1,8 +1,13 @@
 package com.chrischen.ad.handler;
 
+import com.chrischen.ad.dump.table.AdCreativeTable;
 import com.chrischen.ad.dump.table.AdPlanTable;
+import com.chrischen.ad.index.DataTable;
 import com.chrischen.ad.index.IndexAware;
+import com.chrischen.ad.index.adPlan.AdPlanIndex;
 import com.chrischen.ad.index.adPlan.AdPlanObject;
+import com.chrischen.ad.index.creative.CreativeIndex;
+import com.chrischen.ad.index.creative.CreativeObject;
 import com.chrischen.ad.mysql.constant.OpType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,5 +48,40 @@ public class AdLevelDataHandler {
                 planTable.getStartDate(),
                 planTable.getEndDate()
         );
+
+        handleBinLogEvent(
+                DataTable.of(AdPlanIndex.class),
+                planObject.getPlanId(),
+                planObject,
+                type
+        );
+    }
+
+    public static void handleLavel2(AdCreativeTable creativeTable, OpType type){
+        CreativeObject creativeObject = new CreativeObject(
+                creativeTable.getAdId(),
+                creativeTable.getName(),
+                creativeTable.getType(),
+                creativeTable.getMaterialType(),
+                creativeTable.getHeight(),
+                creativeTable.getWidth(),
+                creativeTable.getAuditStatus(),
+                creativeTable.getAdUrl()
+        );
+
+        handleBinLogEvent(
+                DataTable.of(CreativeIndex.class),
+                creativeObject.getAdId(),
+                creativeObject,
+                type
+        );
     }
 }
+
+
+
+
+
+
+
+
