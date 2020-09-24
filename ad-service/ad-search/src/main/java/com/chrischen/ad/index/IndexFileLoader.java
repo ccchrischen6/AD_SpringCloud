@@ -2,10 +2,7 @@ package com.chrischen.ad.index;
 
 import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.dump.DConstant;
-import com.chrischen.ad.dump.table.AdCreativeTable;
-import com.chrischen.ad.dump.table.AdCreativeUnitTable;
-import com.chrischen.ad.dump.table.AdPlanTable;
-import com.chrischen.ad.dump.table.AdUnitTable;
+import com.chrischen.ad.dump.table.*;
 import com.chrischen.ad.handler.AdLevelDataHandler;
 import com.chrischen.ad.mysql.constant.OpType;
 import org.springframework.context.annotation.DependsOn;
@@ -77,6 +74,37 @@ public class IndexFileLoader {
 
         adCreativeUnitStrings.forEach(cu -> AdLevelDataHandler.handleLevel3(
                 JSON.parseObject(cu, AdCreativeUnitTable.class),
+                OpType.ADD
+        ));
+
+
+        List<String> adUnitDistrictStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_UNIT_DISTRICT)
+        );
+        adUnitDistrictStrings.forEach(d -> AdLevelDataHandler.handleLevel4(
+                JSON.parseObject(d, AdUnitDistrictTable.class),
+                OpType.ADD
+        ));
+
+        List<String> adUnitItStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_UNIT_IT)
+        );
+        adUnitItStrings.forEach(i -> AdLevelDataHandler.handleLevel4(
+                JSON.parseObject(i, AdUnitItTable.class),
+                OpType.ADD
+        ));
+
+        List<String> adUnitKeywordStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_UNIT_KEYWORD)
+        );
+        adUnitKeywordStrings.forEach(k -> AdLevelDataHandler.handleLevel4(
+                JSON.parseObject(k, AdUnitKeywordTable.class),
                 OpType.ADD
         ));
 
