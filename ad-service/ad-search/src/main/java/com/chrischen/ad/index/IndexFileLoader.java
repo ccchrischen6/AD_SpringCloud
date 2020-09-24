@@ -1,0 +1,93 @@
+package com.chrischen.ad.index;
+
+import com.alibaba.fastjson.JSON;
+import com.chrischen.ad.dump.DConstant;
+import com.chrischen.ad.dump.table.AdCreativeTable;
+import com.chrischen.ad.dump.table.AdCreativeUnitTable;
+import com.chrischen.ad.dump.table.AdPlanTable;
+import com.chrischen.ad.dump.table.AdUnitTable;
+import com.chrischen.ad.handler.AdLevelDataHandler;
+import com.chrischen.ad.mysql.constant.OpType;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Created by Chris Chen
+ * load file from directory and build index
+ */
+
+@Component
+@DependsOn("DataTable")
+public class IndexFileLoader {
+
+    //after the class is generated, firstly execute init method
+    //we should construct the index from upper level to lower level
+    @PostConstruct
+    public void init() {
+        //read the file
+        List<String> adPlanStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_PLAN)
+        );
+
+
+        adPlanStrings.forEach(s -> AdLevelDataHandler.handleLevel2(
+                JSON.parseObject(s, AdPlanTable.class),
+                OpType.ADD
+        ));
+
+        List<String> adCreativeStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_CREATIVE)
+        );
+
+        adCreativeStrings.forEach(c -> AdLevelDataHandler.handleLevel2(
+                JSON.parseObject(c, AdCreativeTable.class),
+                OpType.ADD
+        ));
+
+
+
+        List<String> adUnitStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_UNIT)
+        );
+
+        adUnitStrings.forEach(u -> AdLevelDataHandler.handleLevel3(
+                JSON.parseObject(u, AdUnitTable.class),
+                OpType.ADD
+        ));
+
+        List<String> adCreativeUnitStrings = loadDumpData(
+                String.format("%s%s",
+                        DConstant.DATA_ROOT_DIR,
+                        DConstant.AD_CREATIVE_UNIT)
+        );
+
+        adCreativeUnitStrings.forEach(cu -> AdLevelDataHandler.handleLevel3(
+                JSON.parseObject(cu, AdCreativeUnitTable.class),
+                OpType.ADD
+        ));
+
+    }
+
+    private List<String> loadDumpData(String fileName){
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(fileName))){
+            return reader.lines().collect(Collectors.toList());
+        }
+        catch (IOException exception){
+            throw new RuntimeException(exception.getMessage());
+        }
+    }
+}
