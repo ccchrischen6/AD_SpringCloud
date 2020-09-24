@@ -1,10 +1,7 @@
 package com.chrischen.ad.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.chrischen.ad.dump.table.AdCreativeTable;
-import com.chrischen.ad.dump.table.AdCreativeUnitTable;
-import com.chrischen.ad.dump.table.AdPlanTable;
-import com.chrischen.ad.dump.table.AdUnitTable;
+import com.chrischen.ad.dump.table.*;
 import com.chrischen.ad.index.DataTable;
 import com.chrischen.ad.index.IndexAware;
 import com.chrischen.ad.index.adPlan.AdPlanIndex;
@@ -15,9 +12,16 @@ import com.chrischen.ad.index.creative.CreativeIndex;
 import com.chrischen.ad.index.creative.CreativeObject;
 import com.chrischen.ad.index.creativeUnit.CreativeUnitIndex;
 import com.chrischen.ad.index.creativeUnit.CreativeUnitObject;
+import com.chrischen.ad.index.district.UnitDistrictIndex;
+import com.chrischen.ad.index.interest.UnitItIndex;
+import com.chrischen.ad.index.keyword.UnitKeywordIndex;
 import com.chrischen.ad.mysql.constant.OpType;
 import com.chrischen.ad.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Chris Chen
@@ -25,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
  * add, update or delete index
  * <p>
  * indexes of level 2 are separated from other indexes
+ *
+ * indexes of level 4 depend on indexes of level 3
  */
 
 @Slf4j
@@ -66,7 +72,7 @@ public class AdLevelDataHandler {
         );
     }
 
-    public static void handleLavel2(AdCreativeTable creativeTable, OpType type) {
+    public static void handleLevel2(AdCreativeTable creativeTable, OpType type) {
         CreativeObject creativeObject = new CreativeObject(
                 creativeTable.getAdId(),
                 creativeTable.getName(),
@@ -142,6 +148,93 @@ public class AdLevelDataHandler {
 
 
     }
+
+    public static void handleLevel4(AdUnitDistrictTable unitDistrictTable, OpType type) {
+        if (type == OpType.UPDATE){
+            log.error("district index does not support update");
+            return;
+        }
+
+        AdUnitObject unitObject = DataTable.of(AdUnitIndex.class).get(unitDistrictTable.getUnitId());
+
+        if(unitObject == null) {
+            log.error("error found in handleLevel 4, the unitObject or the creativeObject has not generated: {}",
+                    unitDistrictTable.getUnitId());
+            return;
+        }
+
+        String key = CommonUtils.stringConcat(
+                unitDistrictTable.getProvince(),
+                unitDistrictTable.getCity());
+
+        Set<Long> value = new HashSet<>(
+                Collections.singleton(unitDistrictTable.getUnitId())
+        );
+
+        handleBinLogEvent(
+                DataTable.of(UnitDistrictIndex.class),
+                key,
+                value,
+                type
+        );
+    }
+
+    public static void handleLevel4(AdUnitItTable unitItTable, OpType type){
+        if(type == OpType.UPDATE){
+            log.error("interest index does not support update");
+            return;
+        }
+
+        AdUnitObject unitObject = DataTable.of(AdUnitIndex.class).get(unitItTable.getUnitId());
+        if(unitObject == null){
+            log.error("error found in handleLevel 4, the unitObject has not generated: {}",
+                    unitItTable.getUnitId());
+            return;
+        }
+
+        Set<Long> value = new HashSet<>(
+                Collections.singleton(unitItTable.getUnitId())
+        );
+
+        handleBinLogEvent(
+                DataTable.of(UnitItIndex.class),
+                unitItTable.getItTag(),
+                value,
+                type
+        );
+    }
+
+
+
+
+    public static void handleLevel4(AdUnitKeywordTable keywordTable, OpType type){
+        if(type == OpType.UPDATE){
+            log.error("keyword index does not support update");
+            return;
+        }
+
+        AdUnitObject unitObject = DataTable.of(AdUnitIndex.class).get(keywordTable.getUnitId());
+        if(unitObject == null){
+            log.error("error found in handleLevel 4, the unitObject or the creativeObject has not generated: {}",
+                    keywordTable.getUnitId());
+            return;
+        }
+
+        Set<Long> value = new HashSet<>(
+                Collections.singleton(keywordTable.getUnitId())
+        );
+
+        handleBinLogEvent(
+                DataTable.of(UnitKeywordIndex.class),
+                keywordTable.getKeyword(),
+                value,
+                type
+        );
+
+
+    }
+
+
 }
 
 
