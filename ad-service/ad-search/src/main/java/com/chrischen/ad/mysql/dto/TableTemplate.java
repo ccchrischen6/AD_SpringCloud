@@ -19,7 +19,7 @@ import java.util.Map;
 public class TableTemplate {
     private String tableName;
     private String level;
-    
+
     private Map<OpType, List<String>> opTypeFieldSetMap = new HashMap<>();
 
     /**
