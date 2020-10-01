@@ -8,6 +8,34 @@ import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 
 /**
  * Created by Chris Chen
+ *
+ * Write---------------
+ * WriteRowsEventData{tableId=22, includedColumns={0, 1, 2}, rows=[
+ *     [11, 11, BWM]
+ * ]}
+ *
+ * Update--------------
+ * UpdateRowsEventData{tableId=22, includedColumnsBeforeUpdate={0, 1, 2}, includedColumns={0, 1, 2}, rows=[
+ *     {before=[11, 11, BWM], after=[11, 11, Audi]}
+ * ]}
+ *
+ * Delete--------------
+ * DeleteRowsEventData{tableId=22, includedColumns={0, 1, 2}, rows=[
+ *     [13, 13, GM]
+ * ]}
+ *
+ *
+ *
+ * select table_schema, table_name, column_name, ordinal_position from information_schema.columns
+ * where table_schema = "ad_data" and table_name = "ad_unit_keyword";
+ *
+ * +--------------+-----------------+-------------+------------------+
+ * | table_schema | table_name      | column_name | ordinal_position |
+ * +--------------+-----------------+-------------+------------------+
+ * | ad_data      | ad_unit_keyword | id          |                1 |
+ * | ad_data      | ad_unit_keyword | unit_id     |                2 |
+ * | ad_data      | ad_unit_keyword | keyword     |                3 |
+ * +--------------+-----------------+-------------+------------------+
  */
 public class BinlogServiceTest {
     public static void main(String[] args) throws Exception{
