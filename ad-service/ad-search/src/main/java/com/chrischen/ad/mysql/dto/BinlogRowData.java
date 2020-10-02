@@ -17,6 +17,8 @@ public class BinlogRowData {
 
     private TableTemplate table;
     private EventType eventType;
+
+    //map: columnName -> the value of operation
     private List<Map<String, String>> before;
     private List<Map<String, String>> after;
 }
