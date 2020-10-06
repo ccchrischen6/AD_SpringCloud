@@ -6,7 +6,7 @@ import com.chrischen.ad.mysql.dto.BinlogRowData;
  * Created by Chris Chen
  */
 public interface Ilistener {
-    //register different listener according to opertion type
+    //register different listener according to operation type
     void register();
 
     void onEvent(BinlogRowData eventData);

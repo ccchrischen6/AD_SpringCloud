@@ -8,8 +8,7 @@ import java.util.Map;
 
 /**
  * Created by Chris Chen
- * convert event to objct
- *
+ * convert event to object
  */
 
 @Data
