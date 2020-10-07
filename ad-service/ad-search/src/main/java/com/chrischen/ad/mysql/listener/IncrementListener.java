@@ -55,7 +55,7 @@ public class IncrementListener implements Ilistener{
         OpType opType = OpType.to(eventType);
         rowData.setOpType(opType);
 
-        //
+
         List<String> fieldList = table.getOpTypeFieldSetMap().get(opType);
         if(null == fieldList) {
             log.warn("{} not support for {}", opType, table.getTableName());
