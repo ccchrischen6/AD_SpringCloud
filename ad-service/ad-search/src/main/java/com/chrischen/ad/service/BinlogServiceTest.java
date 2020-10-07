@@ -37,6 +37,13 @@ import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
  * | ad_data      | ad_unit_keyword | keyword     |                3 |
  * +--------------+-----------------+-------------+------------------+
  */
+
+
+/**
+ * WriteRowsEventData{tableId=18, includedColumns={0, 1, 2, 3, 4, 5, 6, 7}, rows=[
+ *     [10, 10, plan, 1, Wed Oct 07 08:00:00 EDT 2020, Wed Oct 07 08:00:00 EDT 2020, Wed Oct 07 08:00:00 EDT 2020, Wed Oct 07 08:00:00 EDT 2020]
+ * ]}
+ */
 public class BinlogServiceTest {
     public static void main(String[] args) throws Exception{
         BinaryLogClient client = new BinaryLogClient(
