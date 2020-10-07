@@ -15,6 +15,6 @@ public class MySqlRowData {
     private String level;
 
     private OpType opType;
-    
+
     private List<Map<String, String>> fieldValueMap = new ArrayList<>();
 }
