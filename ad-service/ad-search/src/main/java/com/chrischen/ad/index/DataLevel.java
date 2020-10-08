@@ -1,8 +1,12 @@
 package com.chrischen.ad.index;
 
+import lombok.Getter;
+
 /**
  * Created by Chris Chen
  */
+
+@Getter
 public enum DataLevel {
     LEVEL2("2","level 2"),
     LEVEL3("3", "level 3"),
