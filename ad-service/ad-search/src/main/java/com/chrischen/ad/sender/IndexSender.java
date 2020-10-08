@@ -1,7 +1,9 @@
 package com.chrischen.ad.sender;
 
 import com.alibaba.fastjson.JSON;
+import com.chrischen.ad.dump.table.AdCreativeTable;
 import com.chrischen.ad.dump.table.AdPlanTable;
+import com.chrischen.ad.handler.AdLevelDataHandler;
 import com.chrischen.ad.index.DataLevel;
 import com.chrischen.ad.mysql.constant.Constant;
 import com.chrischen.ad.mysql.dto.MySqlRowData;
@@ -72,9 +74,58 @@ public class IndexSender implements ISender{
                 });
 
                 planTables.add(planTable);
-
             }
+
+            planTables.forEach(p -> {
+                AdLevelDataHandler.handleLevel2(p, rowData.getOpType());
+            });
         }
+
+        else if (rowData.getTableName().equals(Constant.AD_CREATIVE_TABLE_INFO.TABLE_NAME)) {
+            List<AdCreativeTable> creativeTables = new ArrayList<>();
+            for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
+                AdCreativeTable creativeTable = new AdCreativeTable();
+                fieldValueMap.forEach((k, v) -> {
+                    switch (k) {
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_ID:
+                            creativeTable.setAdId(Long.valueOf(v));
+                            break;
+
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_TYPE:
+                            creativeTable.setType(Integer.valueOf(v));
+                            break;
+
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_MATERIAL_TYPE:
+                            creativeTable.setMaterialType(Integer.valueOf(v));
+                            break;
+
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_AUDIT_STATUS:
+                            creativeTable.setAuditStatus(Integer.valueOf(v));
+                            break;
+
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_HEIGHT:
+                            creativeTable.setHeight(Integer.valueOf(v));
+                            break;
+
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_WIDTH:
+                            creativeTable.setWidth(Integer.valueOf(v));
+                            break;
+
+                        case Constant.AD_CREATIVE_TABLE_INFO.COLUMN_URL:
+                            creativeTable.setAdUrl(v);
+                            break;
+                    }
+                });
+
+                creativeTables.add(creativeTable);
+            }
+
+            creativeTables.forEach(c -> {
+                AdLevelDataHandler.handleLevel2(c, rowData.getOpType());
+            });
+        }
+
+
     }
 
     private void Level3RowData(MySqlRowData rowData){
