@@ -1,10 +1,7 @@
 package com.chrischen.ad.sender;
 
 import com.alibaba.fastjson.JSON;
-import com.chrischen.ad.dump.table.AdCreativeTable;
-import com.chrischen.ad.dump.table.AdCreativeUnitTable;
-import com.chrischen.ad.dump.table.AdPlanTable;
-import com.chrischen.ad.dump.table.AdUnitTable;
+import com.chrischen.ad.dump.table.*;
 import com.chrischen.ad.handler.AdLevelDataHandler;
 import com.chrischen.ad.index.DataLevel;
 import com.chrischen.ad.mysql.constant.Constant;
@@ -23,36 +20,31 @@ import java.util.Map;
 
 @Slf4j
 @Component("indexSender")
-public class IndexSender implements ISender{
+public class IndexSender implements ISender {
     @Override
     public void send(MySqlRowData rowData) {
         String level = rowData.getLevel();
 
-        if(DataLevel.LEVEL2.getLevel().equals(level)) {
+        if (DataLevel.LEVEL2.getLevel().equals(level)) {
             Level2RowData(rowData);
-        }
-        else if (DataLevel.LEVEL3.getLevel().equals(level)){
+        } else if (DataLevel.LEVEL3.getLevel().equals(level)) {
             Level3RowData(rowData);
-        }
-
-        else if (DataLevel.LEVEL4.getLevel().equals(level)) {
+        } else if (DataLevel.LEVEL4.getLevel().equals(level)) {
             Level4RowData(rowData);
-        }
-
-        else {
+        } else {
             log.error("Error found at MySqlRowData: {}", JSON.toJSONString(rowData));
         }
 
     }
 
-    private void Level2RowData(MySqlRowData rowData){
+    private void Level2RowData(MySqlRowData rowData) {
         if (rowData.getTableName().equals(Constant.AD_PLAN_TABLE_INFO.TABLE_NAME)) {
             List<AdPlanTable> planTables = new ArrayList<>();
 
             for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
                 AdPlanTable planTable = new AdPlanTable();
                 fieldValueMap.forEach((k, v) -> {
-                    switch (k){
+                    switch (k) {
                         case Constant.AD_PLAN_TABLE_INFO.COLUMN_ID:
                             planTable.setId(Long.valueOf(v));
                             break;
@@ -81,9 +73,7 @@ public class IndexSender implements ISender{
             planTables.forEach(p -> {
                 AdLevelDataHandler.handleLevel2(p, rowData.getOpType());
             });
-        }
-
-        else if (rowData.getTableName().equals(Constant.AD_CREATIVE_TABLE_INFO.TABLE_NAME)) {
+        } else if (rowData.getTableName().equals(Constant.AD_CREATIVE_TABLE_INFO.TABLE_NAME)) {
             List<AdCreativeTable> creativeTables = new ArrayList<>();
             for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
                 AdCreativeTable creativeTable = new AdCreativeTable();
@@ -130,8 +120,8 @@ public class IndexSender implements ISender{
 
     }
 
-    private void Level3RowData(MySqlRowData rowData){
-        if(rowData.getTableName().equals(Constant.AD_UNIT_TABLE_INFO.TABLE_NAME)) {
+    private void Level3RowData(MySqlRowData rowData) {
+        if (rowData.getTableName().equals(Constant.AD_UNIT_TABLE_INFO.TABLE_NAME)) {
             List<AdUnitTable> unitTables = new ArrayList<>();
             for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
                 AdUnitTable unitTable = new AdUnitTable();
@@ -161,9 +151,7 @@ public class IndexSender implements ISender{
             unitTables.forEach(u -> {
                 AdLevelDataHandler.handleLevel3(u, rowData.getOpType());
             });
-        }
-
-        else if (rowData.getTableName().equals(Constant.AD_CREATIVE_UNIT_TABLE_INFO.TABLE_NAME)) {
+        } else if (rowData.getTableName().equals(Constant.AD_CREATIVE_UNIT_TABLE_INFO.TABLE_NAME)) {
             List<AdCreativeUnitTable> creativeUnitTables = new ArrayList<>();
             for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
                 AdCreativeUnitTable creativeUnitTable = new AdCreativeUnitTable();
@@ -187,7 +175,120 @@ public class IndexSender implements ISender{
         }
     }
 
-    private void Level4RowData(MySqlRowData rowData){
+    private void Level4RowData(MySqlRowData rowData) {
+        switch (rowData.getTableName()) {
+            case Constant.AD_UNIT_DISTRICT_TABLE_INFO.TABLE_NAME:
+                List<AdUnitDistrictTable> districtTables = new ArrayList<>();
 
+                for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
+
+                    AdUnitDistrictTable districtTable = new AdUnitDistrictTable();
+                    fieldValueMap.forEach((k, v) -> {
+                        switch (k) {
+                            case Constant.AD_UNIT_DISTRICT_TABLE_INFO.COLUMN_UNIT_ID:
+                                districtTable.setUnitId(Long.valueOf(v));
+                                break;
+
+                            case Constant.AD_UNIT_DISTRICT_TABLE_INFO.COLUMN_PROVINCE:
+                                districtTable.setProvince(v);
+                                break;
+
+                            case Constant.AD_UNIT_DISTRICT_TABLE_INFO.COLUMN_CITY:
+                                districtTable.setCity(v);
+                                break;
+                        }
+                    });
+                    districtTables.add(districtTable);
+                }
+                districtTables.forEach(d -> {
+                    AdLevelDataHandler.handleLevel4(d, rowData.getOpType());
+                });
+                break;
+
+            case Constant.AD_UNIT_IT_TABLE_INFO.TABLE_NAME:
+                List<AdUnitItTable> adUnitItTables = new ArrayList<>();
+
+                for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
+
+                    AdUnitItTable adUnitItTable = new AdUnitItTable();
+                    fieldValueMap.forEach((k, v) -> {
+                        switch (k) {
+                            case Constant.AD_UNIT_IT_TABLE_INFO.COLUMN_UNIT_ID:
+                                adUnitItTable.setUnitId(Long.valueOf(v));
+                                break;
+
+                            case Constant.AD_UNIT_IT_TABLE_INFO.COLUMN_IT_TAG:
+                                adUnitItTable.setItTag(v);
+                                break;
+                        }
+                    });
+
+                    adUnitItTables.add(adUnitItTable);
+                }
+                adUnitItTables.forEach(i -> {
+                    AdLevelDataHandler.handleLevel4(i, rowData.getOpType());
+                });
+                break;
+
+            case Constant.AD_UNIT_KEYWORD_TABLE_INFO.TABLE_NAME:
+                List<AdUnitKeywordTable> adUnitKeywordTables = new ArrayList<>();
+                for (Map<String, String> fieldValueMap : rowData.getFieldValueMap()) {
+
+                    AdUnitKeywordTable adUnitKeywordTable = new AdUnitKeywordTable();
+                    fieldValueMap.forEach((k, v) -> {
+                        switch (k) {
+                            case Constant.AD_UNIT_KEYWORD_TABLE_INFO.COLUMN_KEYWORD:
+                                adUnitKeywordTable.setKeyword(v);
+                                break;
+
+                            case Constant.AD_UNIT_KEYWORD_TABLE_INFO.COLUMN_UNIT_ID:
+                                adUnitKeywordTable.setUnitId(Long.valueOf(v));
+                                break;
+                        }
+                    });
+
+                    adUnitKeywordTables.add(adUnitKeywordTable);
+                }
+
+                adUnitKeywordTables.forEach(k -> {
+                    AdLevelDataHandler.handleLevel4(k, rowData.getOpType());
+                });
+                break;
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
