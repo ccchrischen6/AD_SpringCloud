@@ -41,7 +41,7 @@ public class SearchRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FeatureInfo {
-        
+
     }
 
 }
