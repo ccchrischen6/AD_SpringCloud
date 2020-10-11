@@ -1,5 +1,9 @@
 package com.chrischen.ad.search;
 
+import com.chrischen.ad.search.vo.feature.DistrictFeature;
+import com.chrischen.ad.search.vo.feature.FeatureRelation;
+import com.chrischen.ad.search.vo.feature.ItFeature;
+import com.chrischen.ad.search.vo.feature.KeywordFeature;
 import com.chrischen.ad.search.vo.media.AdSlot;
 import com.chrischen.ad.search.vo.media.App;
 import com.chrischen.ad.search.vo.media.Device;
@@ -41,7 +45,11 @@ public class SearchRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FeatureInfo {
+        private KeywordFeature keywordFeature;
+        private DistrictFeature districtFeature;
+        private ItFeature itFeature;
 
+        private FeatureRelation relation = FeatureRelation.AND;
     }
 
 }
