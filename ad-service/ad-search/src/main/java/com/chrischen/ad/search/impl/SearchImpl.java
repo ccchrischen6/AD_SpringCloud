@@ -1,5 +1,6 @@
 package com.chrischen.ad.search.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.index.CommonStatus;
 import com.chrischen.ad.index.DataTable;
 import com.chrischen.ad.index.adUnit.AdUnitIndex;
@@ -18,6 +19,7 @@ import com.chrischen.ad.search.vo.feature.FeatureRelation;
 import com.chrischen.ad.search.vo.feature.ItFeature;
 import com.chrischen.ad.search.vo.feature.KeywordFeature;
 import com.chrischen.ad.search.vo.media.AdSlot;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -31,8 +33,10 @@ import java.util.*;
 @Slf4j
 @Service
 public class SearchImpl implements ISearch {
+
     @Override
-    public SearchRequest fetchAds(SearchRequest request) {
+    @HystrixCommand(fallbackMethod = "fallback")
+    public SearchResponse fetchAds(SearchRequest request) {
 
         // ad position request
         List<AdSlot> adSlots = request.getRequestInfo().getAdSlots();
@@ -82,13 +86,14 @@ public class SearchImpl implements ISearch {
                     adSlot.getType()
             );
 
-            adSlot2Ads.put(adSlot.getAdSlotCode(), )
 
-
+            adSlot2Ads.put(adSlot.getAdSlotCode(), buildCreativeResponse(creatives));
         }
+        log.info("fetchAds: {}-{}",
+                JSON.toJSONString(request),
+                JSON.toJSONString(response));
 
-
-        return null;
+        return response;
     }
 
     private Set<Long> getORRelationUnitIds(Set<Long> adUnitIdSet,
@@ -194,6 +199,8 @@ public class SearchImpl implements ISearch {
         );
     }
 
+
+    //only get one creative randomly
     private List<SearchResponse.Creative> buildCreativeResponse(List<CreativeObject> creatives) {
         if(CollectionUtils.isEmpty(creatives)) {
             return Collections.emptyList();
