@@ -1,7 +1,12 @@
 package com.chrischen.ad.search.impl;
 
+import com.chrischen.ad.index.CommonStatus;
 import com.chrischen.ad.index.DataTable;
 import com.chrischen.ad.index.adUnit.AdUnitIndex;
+import com.chrischen.ad.index.adUnit.AdUnitObject;
+import com.chrischen.ad.index.creative.CreativeIndex;
+import com.chrischen.ad.index.creative.CreativeObject;
+import com.chrischen.ad.index.creativeUnit.CreativeUnitIndex;
 import com.chrischen.ad.index.district.UnitDistrictIndex;
 import com.chrischen.ad.index.interest.UnitItIndex;
 import com.chrischen.ad.index.keyword.UnitKeywordIndex;
@@ -62,6 +67,24 @@ public class SearchImpl implements ISearch {
                         itFeature
                 );
             }
+
+            List<AdUnitObject> unitObjects = DataTable.of(AdUnitIndex.class).fetch(targetUnitIdSet);
+
+            filterAdUnitAndPlanStatus(unitObjects, CommonStatus.VALID);
+            List<Long> adIds = DataTable.of(CreativeUnitIndex.class).selectAds(unitObjects);
+            List<CreativeObject> creatives = DataTable.of(CreativeIndex.class).fetch(adIds);
+
+            //further filter CreativeObject with AdSlot
+            filterCreativeByAdSlot(
+                    creatives,
+                    adSlot.getWidth(),
+                    adSlot.getHeight(),
+                    adSlot.getType()
+            );
+
+            adSlot2Ads.put(adSlot.getAdSlotCode(), )
+
+
         }
 
 
@@ -141,8 +164,43 @@ public class SearchImpl implements ISearch {
                             DataTable.of(UnitItIndex.class).match(adUnitId, itFeature.getIts())
             );
         }
+    }
 
+    private void filterAdUnitAndPlanStatus(List<AdUnitObject> unitObjects, CommonStatus status) {
+        if(CollectionUtils.isEmpty(unitObjects)) {
+            return;
+        }
 
+        CollectionUtils.filter(
+                unitObjects,
+                object -> object.getUnitStatus().equals(status.getStatus()) &&
+                        object.getAdPlanObject().getPlanStatus().equals(status.getStatus())
+        );
+    }
+
+    private void filterCreativeByAdSlot(
+            List<CreativeObject> creatives, Integer width, Integer height, List<Integer> type) {
+        if (CollectionUtils.isEmpty(creatives)) {
+            return;
+        }
+
+        CollectionUtils.filter(
+                creatives,
+                creative ->
+                        creative.getAuditStatus().equals(CommonStatus.VALID.getStatus()) &&
+                                creative.getWidth().equals(width) &&
+                                creative.getHeight().equals(height) &&
+                                type.contains(creative.getType())
+        );
+    }
+
+    private List<SearchResponse.Creative> buildCreativeResponse(List<CreativeObject> creatives) {
+        if(CollectionUtils.isEmpty(creatives)) {
+            return Collections.emptyList();
+        }
+
+        CreativeObject randomObject = creatives.get(Math.abs(new Random().nextInt()) % creatives.size());
+        return Collections.singletonList(SearchResponse.convert(randomObject));
     }
 
 
