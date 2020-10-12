@@ -83,6 +83,7 @@ public class CreativeUnitIndex implements IndexAware <String, CreativeUnitObject
 
     }
 
+    // get adIds by unitObject
     public List<Long> selectAds(List<AdUnitObject> unitObjects){
         if(CollectionUtils.isEmpty(unitObjects)) {
             return Collections.emptyList();
