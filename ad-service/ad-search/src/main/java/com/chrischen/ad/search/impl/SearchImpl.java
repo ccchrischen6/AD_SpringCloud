@@ -34,6 +34,10 @@ import java.util.*;
 @Service
 public class SearchImpl implements ISearch {
 
+    public SearchResponse fallback(SearchRequest request, Throwable e) {
+        return null;
+    }
+
     @Override
     @HystrixCommand(fallbackMethod = "fallback")
     public SearchResponse fetchAds(SearchRequest request) {
