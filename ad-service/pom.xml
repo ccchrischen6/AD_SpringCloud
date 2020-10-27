@@ -22,6 +22,7 @@
         <module>ad-search</module>
         <module>ad-test-only</module>
         <module>ad-search</module>
+        <module>ad-dashboard</module>
     </modules>
     <packaging>pom</packaging>
 
