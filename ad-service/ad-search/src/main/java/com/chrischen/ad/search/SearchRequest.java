@@ -48,7 +48,6 @@ public class SearchRequest {
         private KeywordFeature keywordFeature;
         private DistrictFeature districtFeature;
         private ItFeature itFeature;
-
         private FeatureRelation relation = FeatureRelation.AND;
     }
 
