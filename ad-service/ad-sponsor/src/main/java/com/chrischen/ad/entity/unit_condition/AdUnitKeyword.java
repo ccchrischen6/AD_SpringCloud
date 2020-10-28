@@ -21,7 +21,7 @@ public class AdUnitKeyword {
     private Long id;
 
     @Basic
-    @Column(name = "keyword", nullable = false)
+    @Column(name = "unit_id", nullable = false)
     private Long unitId;
 
     @Basic

@@ -22,7 +22,7 @@ public class AdUnitIt {
     private Long id;
 
     @Basic
-    @Column(name = "id", nullable = false)
+    @Column(name = "unit_id", nullable = false)
     private Long unitId;
 
     @Basic

@@ -4,7 +4,7 @@ package com.chrischen.ad.dump;
  * Created by Chris Chen
  */
 public class DConstant {
-    public static final String DATA_ROOT_DIR = "/Users/chrischen/IdeaProjects/AD_SpringCloud/mysql_data";
+    public static final String DATA_ROOT_DIR = "/Users/chrischen/IdeaProjects/AD_SpringCloud/mysql_data/";
 
     //export all data files
     public static final String AD_PLAN = "ad_plan.data";
