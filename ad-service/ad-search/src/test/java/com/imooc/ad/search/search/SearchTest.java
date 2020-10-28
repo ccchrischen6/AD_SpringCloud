@@ -1,4 +1,4 @@
-package com.imooc.ad.search;
+package com.imooc.ad.search.search;
 
 import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.search.ISearch;
@@ -11,7 +11,7 @@ import com.chrischen.ad.search.vo.media.AdSlot;
 import com.chrischen.ad.search.vo.media.App;
 import com.chrischen.ad.search.vo.media.Device;
 import com.chrischen.ad.search.vo.media.Geo;
-import javafx.application.Application;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +58,29 @@ public class SearchTest {
                 ),
                 Arrays.asList("台球", "游泳"),
                 FeatureRelation.OR
+        ));
+        System.out.println(JSON.toJSONString(request));
+        System.out.println(JSON.toJSONString(search.fetchAds(request)));
+
+
+        request.setRequestInfo(new SearchRequest.RequestInfo(
+                "aaa",
+                Collections.singletonList(new AdSlot(
+                        "ad-y", 1,
+                        1080, 720, Arrays.asList(1, 2),
+                        1000
+                )),
+                buildExampleApp(),
+                buildExampleDevice(),
+                buildExampleGeo()
+        ));
+        request.setFeatureInfo(buildExampleFeatureInfo(
+                Arrays.asList("宝马", "大众", "标志"),
+                Collections.singletonList(
+                        new DistrictFeature.ProvinceAndCity(
+                                "安徽省", "合肥市")),
+                Arrays.asList("台球", "游泳"),
+                FeatureRelation.AND
         ));
         System.out.println(JSON.toJSONString(request));
         System.out.println(JSON.toJSONString(search.fetchAds(request)));
