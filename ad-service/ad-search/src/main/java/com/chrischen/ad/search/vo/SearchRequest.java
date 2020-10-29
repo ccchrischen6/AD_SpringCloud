@@ -1,4 +1,4 @@
-package com.chrischen.ad.search;
+package com.chrischen.ad.search.vo;
 
 import com.chrischen.ad.search.vo.feature.DistrictFeature;
 import com.chrischen.ad.search.vo.feature.FeatureRelation;

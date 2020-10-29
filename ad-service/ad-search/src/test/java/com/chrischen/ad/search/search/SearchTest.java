@@ -1,8 +1,9 @@
-package com.imooc.ad.search.search;
+package com.chrischen.ad.search.search;
 
 import com.alibaba.fastjson.JSON;
+import com.chrischen.ad.search.Application;
 import com.chrischen.ad.search.ISearch;
-import com.chrischen.ad.search.SearchRequest;
+import com.chrischen.ad.search.vo.SearchRequest;
 import com.chrischen.ad.search.vo.feature.DistrictFeature;
 import com.chrischen.ad.search.vo.feature.FeatureRelation;
 import com.chrischen.ad.search.vo.feature.ItFeature;
@@ -32,6 +33,8 @@ public class SearchTest {
     @Autowired
     private ISearch search;
 
+
+
     @Test
     public void testFetchAds() {
         SearchRequest request = new SearchRequest();
@@ -60,9 +63,11 @@ public class SearchTest {
                 FeatureRelation.OR
         ));
         System.out.println(JSON.toJSONString(request));
-        System.out.println(JSON.toJSONString(search.fetchAds(request)));
+//        System.out.println(JSON.toJSONString(search.fetchAds(request)));
 
 
+
+        //build the second test case
         request.setRequestInfo(new SearchRequest.RequestInfo(
                 "aaa",
                 Collections.singletonList(new AdSlot(
@@ -103,8 +108,8 @@ public class SearchTest {
                 "1.1.1",
                 "127.0.0.1",
                 "12",
-                "3840 2160",
-                "3840 2160",
+                "1920 1080",
+                "1920 1080",
                 "12345678"
         );
     }

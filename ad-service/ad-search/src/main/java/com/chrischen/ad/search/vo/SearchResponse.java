@@ -1,4 +1,4 @@
-package com.chrischen.ad.search;
+package com.chrischen.ad.search.vo;
 
 import com.chrischen.ad.index.creative.CreativeObject;
 import lombok.AllArgsConstructor;
