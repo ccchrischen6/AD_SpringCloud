@@ -1,4 +1,4 @@
-package com.chrischen.ad.sender;
+package com.chrischen.ad.sender.index;
 
 import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.dump.table.*;
@@ -6,6 +6,7 @@ import com.chrischen.ad.handler.AdLevelDataHandler;
 import com.chrischen.ad.index.DataLevel;
 import com.chrischen.ad.mysql.constant.Constant;
 import com.chrischen.ad.mysql.dto.MySqlRowData;
+import com.chrischen.ad.sender.ISender;
 import com.chrischen.ad.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

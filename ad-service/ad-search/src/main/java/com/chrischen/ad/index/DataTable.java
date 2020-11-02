@@ -53,6 +53,10 @@ public class DataTable implements ApplicationContextAware, PriorityOrdered {
     //get bean by class
     @SuppressWarnings("all")
     private static <T> T bean(Class clazz) {
+        System.out.println("-----------------------");
+        System.out.println(clazz);
+        System.out.println(applicationContext);
+        System.out.println(null == (T) applicationContext.getBean((clazz)));
         return (T) applicationContext.getBean((clazz));
     }
 }

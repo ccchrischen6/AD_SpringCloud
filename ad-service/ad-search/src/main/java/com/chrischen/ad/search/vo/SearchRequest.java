@@ -37,8 +37,8 @@ public class SearchRequest {
 
         private List<AdSlot> adSlots;
         private App app;
-        private Device device;
         private Geo geo;
+        private Device device;
     }
 
     @Data

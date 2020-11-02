@@ -50,8 +50,8 @@ public class SearchTest {
                         100
                 )),
                 buildExampleApp(),
-                buildExampleDevice(),
-                buildExampleGeo()
+                buildExampleGeo(),
+                buildExampleDevice()
                 ));
 
         request.setFeatureInfo(buildExampleFeatureInfo(
@@ -63,7 +63,7 @@ public class SearchTest {
                 FeatureRelation.OR
         ));
         System.out.println(JSON.toJSONString(request));
-//        System.out.println(JSON.toJSONString(search.fetchAds(request)));
+        System.out.println(JSON.toJSONString(search.fetchAds(request)));
 
 
 
@@ -76,8 +76,8 @@ public class SearchTest {
                         1000
                 )),
                 buildExampleApp(),
-                buildExampleDevice(),
-                buildExampleGeo()
+                buildExampleGeo(),
+                buildExampleDevice()
         ));
         request.setFeatureInfo(buildExampleFeatureInfo(
                 Arrays.asList("宝马", "大众", "标志"),
