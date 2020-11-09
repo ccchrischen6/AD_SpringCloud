@@ -3,9 +3,11 @@ package com.chrischen.ad.index;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * save all index beans to a map
  * when using a particular bean, we just load and save it into the map
  */
+
 @Component
 public class DataTable implements ApplicationContextAware, PriorityOrdered {
 
@@ -21,10 +24,10 @@ public class DataTable implements ApplicationContextAware, PriorityOrdered {
 
     public static final Map<Class, Object> dataTableMap = new ConcurrentHashMap<>();
 
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         DataTable.applicationContext = applicationContext;
+        System.out.println("DataTable setApplicationContext works");
     }
 
     //the less the value is, higher order it maintains
@@ -53,10 +56,10 @@ public class DataTable implements ApplicationContextAware, PriorityOrdered {
     //get bean by class
     @SuppressWarnings("all")
     private static <T> T bean(Class clazz) {
-        System.out.println("-----------------------");
+//        System.out.println("-----------------------");
         System.out.println(clazz);
         System.out.println(applicationContext);
-        System.out.println(null == (T) applicationContext.getBean((clazz)));
+//        System.out.println(null == (T) applicationContext.getBean((clazz)));
         return (T) applicationContext.getBean((clazz));
     }
 }

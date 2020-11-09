@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  */
 
 @Component
-@DependsOn("DataTable")
 public class IndexFileLoader {
 
     //after the class is generated, firstly execute init method

@@ -65,8 +65,6 @@ public class SearchTest {
         System.out.println(JSON.toJSONString(request));
         System.out.println(JSON.toJSONString(search.fetchAds(request)));
 
-
-
         //build the second test case
         request.setRequestInfo(new SearchRequest.RequestInfo(
                 "aaa",
@@ -89,8 +87,6 @@ public class SearchTest {
         ));
         System.out.println(JSON.toJSONString(request));
         System.out.println(JSON.toJSONString(search.fetchAds(request)));
-
-
     }
 
     private App buildExampleApp() {

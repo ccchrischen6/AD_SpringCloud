@@ -3,6 +3,7 @@ package com.chrischen.ad.search.impl;
 import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.index.CommonStatus;
 import com.chrischen.ad.index.DataTable;
+import com.chrischen.ad.index.adPlan.AdPlanIndex;
 import com.chrischen.ad.index.adUnit.AdUnitIndex;
 import com.chrischen.ad.index.adUnit.AdUnitObject;
 import com.chrischen.ad.index.creative.CreativeIndex;
@@ -22,6 +23,7 @@ import com.chrischen.ad.search.vo.media.AdSlot;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -57,7 +59,6 @@ public class SearchImpl implements ISearch {
 
         for (AdSlot adSlot : adSlots) {
             Set<Long> targetUnitIdSet;
-
             //get initial AdUnit by slot type
             Set<Long> adUnitIdSet = DataTable.of(AdUnitIndex.class).match(adSlot.getPositionType());
 
