@@ -3,11 +3,8 @@ package com.chrischen.ad.index;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,7 +51,7 @@ public class DataTable implements ApplicationContextAware, PriorityOrdered {
     }
 
     //get bean by class
-    @SuppressWarnings("all")
+//    @SuppressWarnings("all")
     private static <T> T bean(Class clazz) {
 //        System.out.println("-----------------------");
         System.out.println(clazz);
