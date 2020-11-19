@@ -26,9 +26,10 @@ public class AccessLogFilter extends ZuulFilter {
         return FilterConstants.SEND_RESPONSE_FILTER_ORDER - 1;
     }
 
+    //if use the current filter
     @Override
     public boolean shouldFilter() {
-        return false;
+        return true;
     }
 
     @Override

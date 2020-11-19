@@ -33,8 +33,6 @@ public class SearchTest {
     @Autowired
     private ISearch search;
 
-
-
     @Test
     public void testFetchAds() {
         SearchRequest request = new SearchRequest();

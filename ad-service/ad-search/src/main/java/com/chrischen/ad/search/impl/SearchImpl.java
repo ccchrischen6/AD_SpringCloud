@@ -23,6 +23,8 @@ import com.chrischen.ad.search.vo.media.AdSlot;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 

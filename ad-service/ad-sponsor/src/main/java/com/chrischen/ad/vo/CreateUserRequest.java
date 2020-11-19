@@ -15,6 +15,6 @@ public class CreateUserRequest {
     private String username;
 
     public boolean validate(){
-        return StringUtils.isEmpty(username);
+        return !StringUtils.isEmpty(username);
     }
 }

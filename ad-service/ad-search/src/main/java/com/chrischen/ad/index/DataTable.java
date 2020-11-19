@@ -1,10 +1,13 @@
 package com.chrischen.ad.index;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,7 +24,9 @@ public class DataTable implements ApplicationContextAware, PriorityOrdered {
 
     public static final Map<Class, Object> dataTableMap = new ConcurrentHashMap<>();
 
+
     @Override
+    @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         DataTable.applicationContext = applicationContext;
         System.out.println("DataTable setApplicationContext works");
