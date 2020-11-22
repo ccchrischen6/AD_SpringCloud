@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class IncrementListener implements Ilistener{
 
-    @Resource(name = "")
+    @Resource
     private ISender sender;
 
     private final AggregationListener aggregationListener;
