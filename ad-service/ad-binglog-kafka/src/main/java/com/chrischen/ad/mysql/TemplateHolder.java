@@ -1,10 +1,10 @@
 package com.chrischen.ad.mysql;
 
 import com.alibaba.fastjson.JSON;
-import com.chrischen.ad.mysql.constant.OpType;
-import com.chrischen.ad.mysql.dto.ParseTemplate;
-import com.chrischen.ad.mysql.dto.TableTemplate;
-import com.chrischen.ad.mysql.dto.Template;
+import com.chrischen.ad.constant.OpType;
+import com.chrischen.ad.dto.ParseTemplate;
+import com.chrischen.ad.dto.TableTemplate;
+import com.chrischen.ad.dto.Template;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,10 +1,10 @@
 package com.chrischen.ad.mysql.listener;
 
-import com.chrischen.ad.mysql.constant.Constant;
-import com.chrischen.ad.mysql.constant.OpType;
-import com.chrischen.ad.mysql.dto.BinlogRowData;
-import com.chrischen.ad.mysql.dto.MySqlRowData;
-import com.chrischen.ad.mysql.dto.TableTemplate;
+import com.chrischen.ad.constant.Constant;
+import com.chrischen.ad.constant.OpType;
+import com.chrischen.ad.dto.BinlogRowData;
+import com.chrischen.ad.dto.MySqlRowData;
+import com.chrischen.ad.dto.TableTemplate;
 import com.chrischen.ad.sender.ISender;
 import com.github.shyiko.mysql.binlog.event.EventType;
 import lombok.extern.slf4j.Slf4j;

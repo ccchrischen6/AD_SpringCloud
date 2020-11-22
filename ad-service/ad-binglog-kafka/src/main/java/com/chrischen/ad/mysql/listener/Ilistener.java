@@ -1,6 +1,6 @@
 package com.chrischen.ad.mysql.listener;
 
-import com.chrischen.ad.mysql.dto.BinlogRowData;
+import com.chrischen.ad.dto.BinlogRowData;
 
 /**
  * Created by Chris Chen
