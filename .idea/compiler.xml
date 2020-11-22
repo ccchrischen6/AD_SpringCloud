@@ -11,9 +11,11 @@
         <module name="ad-search" />
         <module name="ad-gateway" />
         <module name="ad-eureka" />
+        <module name="ad-binlog-common" />
         <module name="ad-test-only" />
         <module name="ad-common" />
         <module name="ad-sponsor" />
+        <module name="ad-binglog-kafka" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,6 +24,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ad-binglog-kafka" options="-parameters" />
+      <module name="ad-binlog-common" options="-parameters" />
       <module name="ad-common" options="-parameters" />
       <module name="ad-dashboard" options="-parameters" />
       <module name="ad-eureka" options="-parameters" />
