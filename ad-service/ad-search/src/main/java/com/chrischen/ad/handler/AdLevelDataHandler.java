@@ -15,7 +15,7 @@ import com.chrischen.ad.index.creativeUnit.CreativeUnitObject;
 import com.chrischen.ad.index.district.UnitDistrictIndex;
 import com.chrischen.ad.index.interest.UnitItIndex;
 import com.chrischen.ad.index.keyword.UnitKeywordIndex;
-import com.chrischen.ad.mysql.constant.OpType;
+import com.chrischen.ad.constant.OpType;
 import com.chrischen.ad.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 

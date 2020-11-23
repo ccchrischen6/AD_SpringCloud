@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.chrischen.ad.dump.table.*;
 import com.chrischen.ad.handler.AdLevelDataHandler;
 import com.chrischen.ad.index.DataLevel;
-import com.chrischen.ad.mysql.constant.Constant;
-import com.chrischen.ad.mysql.dto.MySqlRowData;
+import com.chrischen.ad.constant.Constant;
+import com.chrischen.ad.dto.MySqlRowData;
 import com.chrischen.ad.sender.ISender;
 import com.chrischen.ad.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 
 @Slf4j
-@Component("indexSender")
+@Component
 public class IndexSender implements ISender {
     @Override
     public void send(MySqlRowData rowData) {
