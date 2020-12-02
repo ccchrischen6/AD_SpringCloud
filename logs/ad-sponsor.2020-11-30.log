@@ -1,0 +1,7 @@
+[2020-11-30 21:40:41:438] main INFO com.chrischen.ad.SponsorApplication 659 - No active profile set, falling back to default profiles: default
+[2020-11-30 21:40:45:933] main INFO com.chrischen.ad.SponsorApplication 59 - Started SponsorApplication in 25.206 seconds (JVM running for 30.81)
+[2020-11-30 22:17:35:293] http-nio-7000-exec-1 INFO c.c.ad.controller.AdPlanOPController 43 - ad-sponsor: getAdPlanByIds -> {"ids":[10],"userId":15}
+[2020-11-30 22:21:39:504] http-nio-7000-exec-3 INFO c.c.ad.controller.AdPlanOPController 43 - ad-sponsor: getAdPlanByIds -> {"ids":[10],"userId":15}
+[2020-11-30 22:21:58:279] http-nio-7000-exec-4 INFO c.c.ad.controller.AdPlanOPController 43 - ad-sponsor: getAdPlanByIds -> {"ids":[10],"userId":15}
+[2020-11-30 22:31:02:999] http-nio-7000-exec-6 INFO c.c.ad.controller.AdPlanOPController 43 - ad-sponsor: getAdPlanByIds -> {"ids":[10],"userId":15}
+[2020-11-30 22:31:34:644] http-nio-7000-exec-7 INFO c.c.ad.controller.AdPlanOPController 43 - ad-sponsor: getAdPlanByIds -> {"ids":[10],"userId":15}
